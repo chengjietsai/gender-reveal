@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirecting...</title>
+    <script>
+      // 保存當前路徑並重定向到基路徑
+      const path = window.location.pathname + window.location.search;
+      sessionStorage.setItem('redirectPath', path);
+      window.location.href = '/gender-reveal/';
+    </script>
+  </head>
+  <body>
+    <p>Redirecting...</p>
+  </body>
+</html>
