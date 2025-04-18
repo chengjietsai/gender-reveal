@@ -24,9 +24,10 @@
       class="absolute top-7/8 left-1/2 -translate-x-1/2 -translate-y-1/2 px-6 py-3 text-lg bg-gradient-to-r from-pink-400 to-blue-300 border-none rounded-full text-white cursor-pointer shadow-md transition-transform duration-200 ease hover:-translate-y-[54%] hover:shadow-lg"
       @click="revealResults"
     >
-      <span class="text-xl mx-1">💖</span> 揭曉性別 <span class="text-xl mx-1">💖</span>
+      <span class="text-xl mx-1">💖</span> 揭曉猜測結果 <span class="text-xl mx-1">💖</span>
     </button>
     <div class="fixed bottom-5 right-5">
+      <div class="text-center pt-1 font-zcool">猜測性別</div>
       <qrcode-vue :value="formUrl" :size="100" />
     </div>
   </div>
@@ -76,8 +77,13 @@ export default {
       savePartyId(partyId.value);
     }
 
-    // 更新為 GitHub Pages URL
-    const formUrl = computed(() => `https://chengjietsai.github.io/gender-reveal/form?party=${partyId.value}`);
+    const formUrl = computed(() => {
+         const isDev = process.env.NODE_ENV === 'development';
+         const baseUrl = isDev
+           ? `http://${window.location.hostname}:5173/gender-reveal`
+           : 'https://chengjietsai.github.io/gender-reveal';
+         return `${baseUrl}/form?party=${partyId.value}`;
+       });
 
     const guesses = ref([]);
     const isRevealed = ref(false);
