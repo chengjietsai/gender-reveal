@@ -21,7 +21,7 @@
     </div>
     <button
       v-if="!isRevealed"
-      class="absolute top-7/8 left-1/2 -translate-x-1/2 -translate-y-1/2 px-6 py-3 text-lg bg-gradient-to-r from-pink-400 to-blue-300 border-none rounded-full text-white cursor-pointer shadow-md transition-transform duration-200 ease hover:-translate-y-[54%] hover:shadow-lg"
+      class="absolute top-7/8 left-1/2 -translate-x-1/2 -translate-y-1/2 px-6 py-3 text-lg bg-gradient-to-r from-pink-400 to-blue-300 border-none rounded-full text-white cursor-pointer shadow-md transition-transform duration-200 ease hover:-translate-y-[50%] hover:shadow-lg"
       @click="revealResults"
     >
       <span class="text-xl mx-1">💖</span> 揭曉猜測結果 <span class="text-xl mx-1">💖</span>
@@ -134,13 +134,12 @@ export default {
     const revealResults = () => {
       isRevealed.value = true;
       stopDrift();
-      const perRow = 4; // 每行 4 個頭像
       const avatarSize = 80; // 頭像尺寸
-      const spacing = 10; // 間距
 
       const boyGuesses = guesses.value.filter(g => g.gender === 'boy');
       const girlGuesses = guesses.value.filter(g => g.gender === 'girl');
 
+      
       guesses.value.forEach((guess) => {
         const side = guess.gender === 'boy' ? '.bg-cyan-100' : '.bg-pink-100';
         const container = document.querySelector(side);
@@ -153,13 +152,26 @@ export default {
           ? boyGuesses.findIndex(g => g.id === guess.id)
           : girlGuesses.findIndex(g => g.id === guess.id);
 
-        const row = Math.floor(index / perRow);
-        const col = index % perRow;
-        const x = col * (avatarSize + spacing) + 10; // 左邊距
-        const y = row * (avatarSize + spacing) + 100; // 頂部考慮標題
+        let useFour = true;
+        let row = 1;
+        let i = 0
+        while (i <= index) {
+          const count = useFour ? 4 : 3
+          if (index < i + count) break
+          i += count
+          useFour = !useFour
+          row++
+        }
+        const countInRow = useFour ? 4 : 3
+        const indexInRow = index - i
 
-        guess.style.top = `${y + rect.top}px`;
-        guess.style.left = `${x + rect.left}px`;
+        const totalWidth = countInRow * avatarSize
+        const gapX = (rect.width - totalWidth) / (countInRow + 1)
+        const left = gapX + indexInRow * (avatarSize + gapX)
+        const top = row * avatarSize*2 + 20
+
+        guess.style.left = `${left + rect.x}px`;
+        guess.style.top = `${top + rect.top}px`;
       });
     };
 
@@ -179,7 +191,7 @@ export default {
             transition: 'all 3s ease-in-out',
           });
           newGuesses.push({ ...data, style });
-          if (!existing && !isRevealed.value) {
+          if (!isRevealed.value) {
             startDrift(newGuesses[newGuesses.length - 1]);
           }
         });

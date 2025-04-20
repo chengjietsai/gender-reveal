@@ -40,7 +40,7 @@
           v-if="showSuccess"
           class="mt-4 p-4 bg-green-100 text-green-700 rounded-lg font-cute text-center"
         >
-          感謝你的猜測！🎊 再猜一次？
+          感謝你的猜測！🎊
         </div>
       </transition>
     </div>
