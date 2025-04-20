@@ -82,7 +82,7 @@ export default {
          const baseUrl = isDev
            ? `http://${window.location.hostname}:5173/gender-reveal`
            : 'https://chengjietsai.github.io/gender-reveal';
-         return `${baseUrl}/form?party=${partyId.value}`;
+         return `${baseUrl}/#/form?party=${partyId.value}`;
        });
 
     const guesses = ref([]);

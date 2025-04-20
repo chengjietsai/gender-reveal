@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
 import MainPage from '../views/MainPage.vue';
 import FormPage from '../views/FormPage.vue';
 
@@ -16,7 +16,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory('/gender-reveal/'), 
+  history: createWebHashHistory('/gender-reveal/'), 
   routes,
 });
 

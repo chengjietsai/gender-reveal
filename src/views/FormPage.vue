@@ -13,6 +13,7 @@
         v-model="gender"
         class="p-3 border border-cyan-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 bg-cyan-50 text-gray-700 font-cute"
       >
+        <option disabled value="">請選擇...</option>
         <option value="boy">男 👶</option>
         <option value="girl">女 👧</option>
       </select>
@@ -57,7 +58,7 @@ export default {
   setup() {
     const route = useRoute();
     const name = ref('');
-    const gender = ref('boy');
+    const gender = ref('');
     const reason = ref('');
     const avatar = ref(null);
     const isSubmitting = ref(false);
