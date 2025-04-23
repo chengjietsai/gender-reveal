@@ -2,21 +2,25 @@
 <template>
   <div class="relative flex h-screen overflow-hidden">
     <div class="w-1/2 p-5 bg-cyan-100">
-      <h2 class="text-4xl font-bold text-center pt-4 font-zcool">男生</h2>
+      <h2 class="text-4xl font-bold text-center pt-4 font-cute">男寶 👶</h2>
       <GenderAvatar
         v-for="guess in boyGuesses"
         :key="guess.id"
         :guess="guess"
         :is-revealed="isRevealed"
+        @hover="handleHover"
+        @leave="handleLeave"
       />
     </div>
     <div class="w-1/2 p-5 bg-pink-100">
-      <h2 class="text-4xl font-bold text-center pt-4 font-zcool">女生</h2>
+      <h2 class="text-4xl font-bold text-center pt-4 font-cute">女寶 👧</h2>
       <GenderAvatar
         v-for="guess in girlGuesses"
         :key="guess.id"
         :guess="guess"
         :is-revealed="isRevealed"
+        @hover="handleHover"
+        @leave="handleLeave"
       />
     </div>
     <button
@@ -26,9 +30,49 @@
     >
       <span class="text-xl mx-1">💖</span> 揭曉猜測結果 <span class="text-xl mx-1">💖</span>
     </button>
-    <div class="fixed bottom-5 right-5">
-      <div class="text-center pt-1 font-zcool">猜測性別</div>
-      <qrcode-vue :value="formUrl" :size="100" />
+
+    <transition name="fade">
+      <div
+        v-if="hoveredGuess && isRevealed"
+        class="fixed bottom-20 left-1/2 -translate-x-1/2 max-w-md w-full flex items-center space-x-4"
+        :class="{ 'flex-row': hoveredGuess.gender === 'boy', 'flex-row-reverse space-x-reverse': hoveredGuess.gender === 'girl' }"
+        @mouseenter="handleBubbleEnter"
+        @mouseleave="handleBubbleLeave"
+      >
+        <!-- 頭像 -->
+        <div class="flex-shrink-0">
+          <img
+            v-if="hoveredGuess.avatar"
+            :src="hoveredGuess.avatar"
+            class="w-20 h-20 rounded-full object-cover"
+          />
+          <div
+            v-else
+            class="w-20 h-20 aspect-square rounded-full bg-gray-400 flex items-center justify-center text-2xl text-white border-2 border-white"
+          >
+            {{ hoveredGuess.name }}
+          </div>
+        </div>
+        <!-- 對話氣泡 -->
+        <div
+          class="relative bg-white rounded-2xl p-4 border-2 shadow-lg max-w speech-bubble"
+          :class="{
+            'speech-bubble-boy border-blue-300': hoveredGuess.gender === 'boy',
+            'speech-bubble-girl border-pink-300': hoveredGuess.gender === 'girl',
+          }"
+        >
+          <p class="text-2xl font-bold text-gray-800 ">
+            {{ hoveredGuess.name }}
+          </p>
+          <p class="text-md text-gray-600 ">
+            猜測原因：{{ hoveredGuess.reason }}
+          </p>
+        </div>
+      </div>
+    </transition>
+    <div v-if="!isRevealed" class="fixed bottom-5 right-5">
+      <div class="text-center pt-1 font-cute text-xl">猜測性別</div>
+      <qrcode-vue :value="formUrl" :size="150" />
     </div>
   </div>
 </template>
@@ -219,8 +263,77 @@ export default {
     const boyGuesses = computed(() => guesses.value.filter((g) => g.gender === 'boy'));
     const girlGuesses = computed(() => guesses.value.filter((g) => g.gender === 'girl'));
 
-    return { boyGuesses, girlGuesses, formUrl, revealResults, isRevealed };
+    const hoveredGuess = ref(null);
+    let isMouseInBubble = false;
+    let leaveTimeout = null;
+    const handleHover = (guess) => {
+      clearTimeout(leaveTimeout);
+      hoveredGuess.value = guess;
+    };
+
+    const handleLeave = () => {
+      if (isMouseInBubble) return;
+      leaveTimeout = setTimeout(() => {
+        if (!isMouseInBubble) {
+          hoveredGuess.value = null;
+        }
+      }, 100);
+    };
+
+    // 處理對話氣泡滑鼠事件
+    const handleBubbleEnter = () => {
+      isMouseInBubble = true;
+      clearTimeout(leaveTimeout);
+    };
+
+    const handleBubbleLeave = () => {
+      isMouseInBubble = false;
+      leaveTimeout = setTimeout(() => {
+        if (!isMouseInBubble) {
+          hoveredGuess.value = null;
+        }
+      }, 100);
+    };
+
+    return { boyGuesses, girlGuesses, formUrl, revealResults, isRevealed, hoveredGuess,handleHover,handleLeave,handleBubbleEnter,
+      handleBubbleLeave};
   },
 };
 </script>
-```
+
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+/* 男生：左側 < 三角形 */
+.speech-bubble-boy::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-right: 10px solid white;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  filter: drop-shadow(-2px 0 2px rgba(0, 0, 0, 0.1));
+}
+/* 女生：右側 > 三角形 */
+.speech-bubble-girl::after {
+  content: '';
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-left: 10px solid white;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  filter: drop-shadow(2px 0 2px rgba(0, 0, 0, 0.1));
+}
+
+</style>

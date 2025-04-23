@@ -9,7 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@fontsource/ma-shan-zheng": "^5.2.5",
     "firebase": "^11.6.0",
     "qrcode.vue": "^3.6.0",
     "uuid": "^11.1.0",

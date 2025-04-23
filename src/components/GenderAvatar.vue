@@ -1,8 +1,13 @@
 <template>
   <div
-    class="w-20 h-20 group"
-    :class="{ 'hover:scale-125': isRevealed }"
+    class="w-30 h-30 group transition-transform duration-200"
+    :class="{ 'hover:scale-125': isRevealed,
+      'border-2 rounded-full border-blue-400': guess.gender === 'boy' && isRevealed,
+      'border-2 rounded-full border-pink-400': guess.gender === 'girl' && isRevealed,
+     }"
     :style="guess.style"
+    @mouseover="handleMouseOver"
+    @mouseleave="handleMouseLeave"
   >
     <img
       v-if="guess.avatar"
@@ -21,12 +26,6 @@
       v-if="!isRevealed"
       class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl text-black"
     >?</span>
-    <div
-      v-if="isRevealed"
-      class="invisible group-hover:visible bg-black/80 text-white p-2 text-2xl rounded absolute -top-16 left-1/2 -translate-x-1/2 whitespace-nowrap z-10"
-    >
-      {{ guess.name }}: {{ guess.reason }}
-    </div>
   </div>
 </template>
 
@@ -41,6 +40,18 @@ export default {
     isRevealed: {
       type: Boolean,
       required: true,
+    },
+  },
+  methods: {
+    handleMouseOver() {
+      if (this.isRevealed) {
+        this.$emit('hover', this.guess);
+      }
+    },
+    handleMouseLeave() {
+      if (this.isRevealed) {
+        this.$emit('leave');
+      }
     },
   },
 };

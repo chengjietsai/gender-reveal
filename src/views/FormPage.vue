@@ -12,6 +12,7 @@
       <select
         v-model="gender"
         class="p-3 border border-cyan-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 bg-cyan-50 text-gray-700 font-cute"
+        required
       >
         <option disabled value="">請選擇...</option>
         <option value="boy">男 👶</option>
@@ -21,13 +22,14 @@
         v-model="reason"
         placeholder="為什麼這樣猜呢？💭"
         class="p-3 border border-purple-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 bg-purple-50 text-gray-700 font-cute resize-none h-24"
+        required
       ></textarea>
-      <input
+      <!-- <input
         type="file"
         @change="handleFileUpload"
         accept="image/*"
         class="p-3 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-pink-400 file:text-white file:font-cute text-gray-700"
-      />
+      /> -->
       <button
         @click="submitGuess"
         class="px-6 py-3 bg-gradient-to-r from-pink-400 to-cyan-400 text-white rounded-lg font-cute text-lg hover:bg-gradient-to-l hover:from-cyan-400 hover:to-pink-400 transition-all duration-300 transform hover:scale-105 disabled:bg-gray-300 disabled:cursor-not-allowed"
