@@ -13,7 +13,7 @@
       v-if="guess.avatar"
       :src="guess.avatar"
       class="w-full h-full rounded-full object-cover"
-      :class="{ 'opacity-50': !isRevealed, 'opacity-100': isRevealed }"
+      :class="{ 'opacity-80': !isRevealed, 'opacity-100': isRevealed }"
     />
     <div
       v-else
@@ -22,10 +22,10 @@
     >
       {{ guess.name }}
     </div>
-    <span
+    <!-- <span
       v-if="!isRevealed"
       class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl text-black"
-    >?</span>
+    >?</span> -->
   </div>
 </template>
 

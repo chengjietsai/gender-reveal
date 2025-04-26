@@ -3,12 +3,18 @@
   <div class="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-pink-100 to-cyan-100 p-4 animate-fade-in">
     <h1 class="text-3xl font-bold mb-8 text-pink-600 font-cute">🍼 猜猜寶寶性別！ 💖</h1>
     <div class="flex flex-col space-y-4 w-full max-w-md bg-white p-6 rounded-xl shadow-md">
-      <input
-        v-model="name"
+      <select v-model="name"
         placeholder="你的名字 ✨"
         class="p-3 border border-pink-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 bg-pink-50 text-gray-700 font-cute"
-        required
-      />
+        required>
+        <option disabled value="">請選擇...</option>
+        <option v-for="name in nameOptions" :key="name" :value="name">
+          {{ name }}
+        </option>
+
+      </select>
+        
+      
       <select
         v-model="gender"
         class="p-3 border border-cyan-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 bg-cyan-50 text-gray-700 font-cute"
@@ -54,6 +60,7 @@ import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { db } from '../firebase';
 import { collection, addDoc } from 'firebase/firestore';
+import { namePhotoMap } from '../data/namePhotoMap';
 
 export default {
   name: 'FormPage',
@@ -97,7 +104,7 @@ export default {
           name: name.value,
           gender: gender.value,
           reason: reason.value || '',
-          avatar: avatar.value || '',
+          avatar: namePhotoMap[name.value] || 'https://via.placeholder.com/64',
           timestamp: Date.now(),
         });
         // 清空表單
@@ -117,8 +124,8 @@ export default {
         isSubmitting.value = false;
       }
     };
-
-    return { name, gender, reason, handleFileUpload, submitGuess, isSubmitting, showSuccess };
+    const nameOptions = Object.keys(namePhotoMap);
+    return { name, gender, reason, handleFileUpload, submitGuess, isSubmitting, showSuccess, nameOptions };
   },
 };
 </script>
