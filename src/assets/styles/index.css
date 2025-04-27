@@ -1,16 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=LXGW+WenKai+Mono+TC&display=swap');
 @import "tailwindcss";
 
 @theme {
   --color-cyan-100: #e0f7fa;
   --color-pink-100: #fce4ec;
-}
-
-
-.font-cute {
-  font-family: "LXGW WenKai Mono TC", monospace;
-  font-weight: 700;
-  font-style: normal;
 }
 
 .animate-fade-in {

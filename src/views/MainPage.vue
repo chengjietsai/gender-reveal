@@ -2,7 +2,7 @@
 <template>
   <div class="relative flex h-screen overflow-hidden">
     <div class="w-1/2 p-5 bg-cyan-100">
-      <h2 class="text-4xl font-bold text-center pt-4 font-cute">男寶 👶</h2>
+      <h2 class="text-5xl font-bold text-center pt-4">男寶寶 👶</h2>
       <GenderAvatar
         v-for="guess in boyGuesses"
         :key="guess.id"
@@ -13,7 +13,7 @@
       />
     </div>
     <div class="w-1/2 p-5 bg-pink-100">
-      <h2 class="text-4xl font-bold text-center pt-4 font-cute">女寶 👧</h2>
+      <h2 class="text-5xl font-bold text-center pt-4">女寶寶 👧</h2>
       <GenderAvatar
         v-for="guess in girlGuesses"
         :key="guess.id"
@@ -25,16 +25,16 @@
     </div>
     <button
       v-if="!isRevealed"
-      class="absolute top-7/8 left-1/2 -translate-x-1/2 -translate-y-1/2 px-6 py-3 text-lg bg-gradient-to-r from-pink-400 to-blue-300 border-none rounded-full text-white cursor-pointer shadow-md transition-transform duration-200 ease hover:-translate-y-[50%] hover:shadow-lg"
+      class="absolute top-7/8 left-1/2 -translate-x-1/2 -translate-y-1/2 px-6 py-3 text-3xl bg-gradient-to-r from-pink-400 to-blue-300 border-none rounded-full text-white cursor-pointer shadow-md transition-transform duration-200 ease hover:-translate-y-[50%] hover:shadow-lg"
       @click="revealResults"
     >
-      <span class="text-xl mx-1">💖</span> 揭曉猜測結果 <span class="text-xl mx-1">💖</span>
+      <span class="text-2xl mx-1">💖</span> 揭曉猜測結果 <span class="text-2xl mx-1">💖</span>
     </button>
 
     <transition name="fade">
       <div
         v-if="hoveredGuess && isRevealed"
-        class="fixed bottom-20 left-1/2 -translate-x-1/2 max-w-md w-full flex items-center space-x-4"
+        class="fixed bottom-20 left-1/2 -translate-x-1/2 max-w-5xl w-full flex items-center space-x-4"
         :class="{ 'flex-row': hoveredGuess.gender === 'boy', 'flex-row-reverse space-x-reverse': hoveredGuess.gender === 'girl' }"
         @mouseenter="handleBubbleEnter"
         @mouseleave="handleBubbleLeave"
@@ -44,35 +44,35 @@
           <img
             v-if="hoveredGuess.avatar"
             :src="hoveredGuess.avatar"
-            class="w-20 h-20 rounded-full object-cover"
+            class="w-40 h-40 rounded-full"
           />
           <div
             v-else
-            class="w-20 h-20 aspect-square rounded-full bg-gray-400 flex items-center justify-center text-2xl text-white border-2 border-white"
+            class="w-40 h-40 aspect-square rounded-full bg-gray-400 flex items-center justify-center text-2xl text-white border-2 border-white"
           >
             {{ hoveredGuess.name }}
           </div>
         </div>
         <!-- 對話氣泡 -->
         <div
-          class="relative bg-white rounded-2xl p-4 border-2 shadow-lg max-w speech-bubble"
+          class="relative bg-white rounded-2xl p-4 border-2 shadow-lg max-w speech-bubble w-200 text-center"
           :class="{
             'speech-bubble-boy border-blue-300': hoveredGuess.gender === 'boy',
             'speech-bubble-girl border-pink-300': hoveredGuess.gender === 'girl',
           }"
         >
-          <p class="text-2xl font-bold text-gray-800 ">
+          <p class="text-4xl font-bold text-gray-800 ">
             {{ hoveredGuess.name }}
           </p>
-          <p class="text-md text-gray-600 ">
+          <p class="text-3xl text-gray-600 mt-4">
             猜測原因：{{ hoveredGuess.reason }}
           </p>
         </div>
       </div>
     </transition>
     <div v-if="!isRevealed" class="fixed bottom-5 right-5">
-      <div class="text-center pt-1 font-cute text-xl">猜測性別</div>
-      <qrcode-vue :value="formUrl" :size="150" />
+      <div class="text-center pt-2 text-3xl">掃描猜測性別</div>
+      <qrcode-vue :value="formUrl" :size="200" />
     </div>
   </div>
 </template>
@@ -209,13 +209,11 @@ export default {
         const countInRow = useFour ? 4 : 3
         const indexInRow = index - i
 
-        const totalWidth = countInRow * avatarSize
-        const gapX = (rect.width - totalWidth) / (countInRow + 1)
-        const left = gapX + indexInRow * (avatarSize + gapX)
-        const top = row * avatarSize*2 + 20
-
+        const gapX = avatarSize * (countInRow === 4 ? 1.75:2)
+        const left = gapX * (countInRow === 4 ? 0.5:1) + indexInRow * (avatarSize + gapX)-20
+        const top = row * avatarSize*3 -30
         guess.style.left = `${left + rect.x}px`;
-        guess.style.top = `${top + rect.top}px`;
+        guess.style.top = `${top + rect.y}px`;
       });
     };
 
@@ -232,7 +230,7 @@ export default {
             position: 'absolute',
             top: existing ? existing.style.top : `${getRandomPosition(data.gender).y}px`,
             left: existing ? existing.style.left : `${getRandomPosition(data.gender).x}px`,
-            transition: 'all 3s ease-in-out',
+            transition: 'all 5s ease-in-out ',
           });
           newGuesses.push({ ...data, style });
           if (!isRevealed.value) {

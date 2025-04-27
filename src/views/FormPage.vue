@@ -1,11 +1,11 @@
 ```vue
 <template>
   <div class="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-pink-100 to-cyan-100 p-4 animate-fade-in">
-    <h1 class="text-3xl font-bold mb-8 text-pink-600 font-cute">🍼 猜猜寶寶性別！ 💖</h1>
+    <h1 class="text-3xl font-bold mb-8 text-pink-600 ">🍼 猜猜寶寶性別！ 💖</h1>
     <div class="flex flex-col space-y-4 w-full max-w-md bg-white p-6 rounded-xl shadow-md">
       <select v-model="name"
         placeholder="你的名字 ✨"
-        class="p-3 border border-pink-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 bg-pink-50 text-gray-700 font-cute"
+        class="p-3 border border-pink-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 bg-pink-50 text-gray-700 "
         required>
         <option disabled value="">請選擇...</option>
         <option v-for="name in nameOptions" :key="name" :value="name">
@@ -17,7 +17,7 @@
       
       <select
         v-model="gender"
-        class="p-3 border border-cyan-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 bg-cyan-50 text-gray-700 font-cute"
+        class="p-3 border border-cyan-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 bg-cyan-50 text-gray-700 "
         required
       >
         <option disabled value="">請選擇...</option>
@@ -27,18 +27,18 @@
       <textarea
         v-model="reason"
         placeholder="為什麼這樣猜呢？💭"
-        class="p-3 border border-purple-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 bg-purple-50 text-gray-700 font-cute resize-none h-24"
+        class="p-3 border border-purple-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 bg-purple-50 text-gray-700  resize-none h-24"
         required
       ></textarea>
       <!-- <input
         type="file"
         @change="handleFileUpload"
         accept="image/*"
-        class="p-3 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-pink-400 file:text-white file:font-cute text-gray-700"
+        class="p-3 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-pink-400 file:text-white file: text-gray-700"
       /> -->
       <button
         @click="submitGuess"
-        class="px-6 py-3 bg-gradient-to-r from-pink-400 to-cyan-400 text-white rounded-lg font-cute text-lg hover:bg-gradient-to-l hover:from-cyan-400 hover:to-pink-400 transition-all duration-300 transform hover:scale-105 disabled:bg-gray-300 disabled:cursor-not-allowed"
+        class="px-6 py-3 bg-gradient-to-r from-pink-400 to-cyan-400 text-white rounded-lg  text-lg hover:bg-gradient-to-l hover:from-cyan-400 hover:to-pink-400 transition-all duration-300 transform hover:scale-105 disabled:bg-gray-300 disabled:cursor-not-allowed"
         :disabled="!name || !gender || isSubmitting"
       >
         {{ isSubmitting ? '提交中...' : '送出猜測！🎉' }}
@@ -46,7 +46,7 @@
       <transition name="fade">
         <div
           v-if="showSuccess"
-          class="mt-4 p-4 bg-green-100 text-green-700 rounded-lg font-cute text-center"
+          class="mt-4 p-4 bg-green-100 text-green-700 rounded-lg  text-center"
         >
           感謝你的猜測！🎊
         </div>
