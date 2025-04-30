@@ -14,5 +14,5 @@ export const namePhotoMap = {
   "育雯阿姨": wen,
   "承靜姑姑": kelly,
   "睿文姑丈":brain,
-  "璐璐姊姊": lulu,
+  "瑀璐姊姊": lulu,
   };
